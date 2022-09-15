@@ -72,7 +72,7 @@ class System:
         view += "-"*45
         return view
 
-    from _visualize import visualize, add_frame, get_distances_bar_plot
+    from _visualize import visualize, add_frame, get_distances_bar_plot, get_RDF_plot
 
 
 if __name__ == '__main__':

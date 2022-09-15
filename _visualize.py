@@ -2,7 +2,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from math import dist
 from statistics import mode
-from numpy import round as round_all_in_array
+from numpy import round as round_all_in_array, arange
 
 
 def visualize(self):
@@ -39,7 +39,7 @@ def add_frame(self):
     self.frames.append(frame)
 
 
-def get_distances_bar_plot(self, num_most_common=3,accuracy=1):
+def get_distances_bar_plot(self, num_most_common=3, accuracy=1):
 
     y = []
 
@@ -56,22 +56,48 @@ def get_distances_bar_plot(self, num_most_common=3,accuracy=1):
     fig.update_yaxes(range=[0, int(max(y))+1])
 
     # Adding mode lines
-    rounded_y = round_all_in_array(y,accuracy)
+    rounded_y = round_all_in_array(y, accuracy)
     for i in range(num_most_common):
-        
+
         common = mode(rounded_y)
-        fig.add_hline(y=common, line_width=1, line_dash="dash", line_color=f"rgb({i*60},{20},{30})")
+        fig.add_hline(y=common, line_width=1, line_dash="dash",
+                      line_color=f"rgb({i*60},{20},{30})")
         rounded_y = list(filter((common).__ne__, rounded_y))
         if not rounded_y:
             break
 
+    fig.show()
+
+
+def get_RDF_plot(self):
+    d_frequency = {}
+
+    for i, atom1 in enumerate(self.ATOMS):
+        for atom2 in self.ATOMS[i+1:]:
+
+            if (dst := round(dist(atom1.position, atom2.position), decimals:=2)) in d_frequency:
+                d_frequency[dst] += 1
+            else:
+                d_frequency[dst] = 1
+
+    y = []
+    x = []
+    for i in arange(0, int(max(d_frequency.keys())*2), 1/10**decimals):
+        x.append(i)
+        if i not in d_frequency:
+            y.append(0)
+        else:
+            y.append(d_frequency[i])
+    # print(x,y,d_frequency)
+
+    fig = px.line(x=x, y=y)
 
     fig.show()
 
 
 if __name__ == '__main__':
     from system import *
-    s=System(3)
+    s = System(3)
     s.generate_atoms(10, (10, 20))
     s.add_frame()
     s.visualize()
