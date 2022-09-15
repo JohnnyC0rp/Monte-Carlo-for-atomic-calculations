@@ -5,7 +5,7 @@ from statistics import mode
 from numpy import round as round_all_in_array, arange
 
 
-def visualize(self):
+def visualize(self, html=False):
 
     fig = go.Figure(
         layout=go.Layout(
@@ -21,6 +21,8 @@ def visualize(self):
         frames=self.frames[1:]
     )
     fig.update_traces(marker_line_width=80)
+    if html:
+        fig.write_html(html)
     fig.show()
 
 
@@ -39,7 +41,7 @@ def add_frame(self):
     self.frames.append(frame)
 
 
-def get_distances_bar_plot(self, num_most_common=3, accuracy=1):
+def get_distances_bar_plot(self, num_most_common=3, accuracy=1, html=False):
 
     y = []
 
@@ -66,19 +68,23 @@ def get_distances_bar_plot(self, num_most_common=3, accuracy=1):
         if not rounded_y:
             break
 
+    if html:
+        fig.write_html(html)
     fig.show()
 
 
-def get_RDF_plot(self):
+def get_RDF_plot(self, html=False, only_for_radius=False):
     d_frequency = {}
 
     for i, atom1 in enumerate(self.ATOMS):
         for atom2 in self.ATOMS[i+1:]:
-            if dist(atom1.position, atom2.position) < self.affecting_radius:
-                if (dst := round(dist(atom1.position, atom2.position), decimals := 3)) in d_frequency:
-                    d_frequency[dst] += 1
-                else:
-                    d_frequency[dst] = 1
+            if only_for_radius:
+                if dist(atom1.position, atom2.position) > self.affecting_radius:
+                    continue
+            if (dst := round(dist(atom1.position, atom2.position), decimals := 3)) in d_frequency:
+                d_frequency[dst] += 1
+            else:
+                d_frequency[dst] = 1
 
     y = []
     x = []
@@ -88,8 +94,9 @@ def get_RDF_plot(self):
             y.append(0)
         else:
             y.append(d_frequency[i])
-    # print(x,y,d_frequency)
 
     fig = px.line(x=x, y=y)
 
+    if html:
+        fig.write_html(html)
     fig.show()
