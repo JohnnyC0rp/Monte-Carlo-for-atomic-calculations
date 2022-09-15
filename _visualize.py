@@ -74,11 +74,11 @@ def get_RDF_plot(self):
 
     for i, atom1 in enumerate(self.ATOMS):
         for atom2 in self.ATOMS[i+1:]:
-
-            if (dst := round(dist(atom1.position, atom2.position), decimals:=2)) in d_frequency:
-                d_frequency[dst] += 1
-            else:
-                d_frequency[dst] = 1
+            if dist(atom1.position, atom2.position) < self.affecting_radius:
+                if (dst := round(dist(atom1.position, atom2.position), decimals := 3)) in d_frequency:
+                    d_frequency[dst] += 1
+                else:
+                    d_frequency[dst] = 1
 
     y = []
     x = []
@@ -93,11 +93,3 @@ def get_RDF_plot(self):
     fig = px.line(x=x, y=y)
 
     fig.show()
-
-
-if __name__ == '__main__':
-    from system import *
-    s = System(3)
-    s.generate_atoms(10, (10, 20))
-    s.add_frame()
-    s.visualize()

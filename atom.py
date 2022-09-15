@@ -43,14 +43,3 @@ class Atom:
 
     def __str__(self: "Atom") -> str:
         return (f"[Pos] \n {self.position}\n")
-
-
-if __name__ == '__main__':
-    a = Atom(Atom.generate_random_vector(axes=3))
-    start_pos = deepcopy(a.position)
-    a.move((1, 1, 1))
-    a.restore_previous_pos()
-    print(a.position, start_pos)
-    assert all(a.position == start_pos)
-    print("Tests passed")
-    print(a)

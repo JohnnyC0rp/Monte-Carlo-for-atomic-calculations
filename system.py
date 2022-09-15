@@ -1,15 +1,17 @@
-from random import choice, uniform
+from random import choice
 from atom import *
 from numpy import array
+from math import dist
 
 
 class System:
 
-    def __init__(self, dimensions: int, ATOMS: list = None):
+    def __init__(self, dimensions: int, affecting_radius: int = 2, ATOMS: list = None):
         self.ATOMS = ATOMS if ATOMS else []
         self.moved_atoms = []
         self.frames = []
         self.dimensions = dimensions
+        self.affecting_radius = affecting_radius
 
     def generate_atoms(self, N, position_range):
         for _ in range(N):
@@ -37,8 +39,9 @@ class System:
         total_energy = 0
         for i, atom1 in enumerate(self.ATOMS):
             for atom2 in self.ATOMS[i+1:]:
-                pair_energy = atom1.get_energy_with(atom2)
-                total_energy += pair_energy
+                if dist(atom1.position, atom2.position) < self.affecting_radius:
+                    pair_energy = atom1.get_energy_with(atom2)
+                    total_energy += pair_energy
         return total_energy
 
     def move_random_atom(self, vector: tuple):
@@ -73,44 +76,3 @@ class System:
         return view
 
     from _visualize import visualize, add_frame, get_distances_bar_plot, get_RDF_plot
-
-
-if __name__ == '__main__':
-    # TODO
-    # [x] Check restore system function
-    s = System(3)
-    s.generate_atoms(2, (-.1, .1))
-    print(s)
-    s.move_random_atom((1, 1, 1))
-    print(s)
-    s.move_last_atom((1, 1, 1))
-    print(s)
-    s.move_last_atom((1, 1, 1))
-    print(s)
-    s.restore_previous_stage()
-    s.restore_previous_stage()
-    s.restore_previous_stage()
-    print(s)
-
-    print(start_e := s.get_total_E())
-    print(s.ATOMS[0].get_energy_with(s.ATOMS[1]))
-    print(s.ATOMS)
-
-    for _ in range(10):
-        s.move_random_atom((1, 1, 1))
-
-    print(s.ATOMS)
-    print(s.get_total_E())
-    print(s.ATOMS[0].get_energy_with(s.ATOMS[1]))
-
-    for _ in range(10):
-        s.restore_previous_stage()
-
-    print(s.ATOMS)
-    print(final_e := s.get_total_E())
-    print(s.ATOMS[0].get_energy_with(s.ATOMS[1]))
-
-    assert final_e == start_e
-
-    print(s)
-    print("Tests passed")
