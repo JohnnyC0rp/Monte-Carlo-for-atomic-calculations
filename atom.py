@@ -9,8 +9,8 @@ from numpy import array
 class Atom:
 
     position: array
-    A: int = 0.5  # ???? How are these coefficients exactly working?
-    B: int = 0.5
+    A: float = 0.5
+    B: float = 0.5
 
     def __post_init__(self) -> None:
 
@@ -21,11 +21,13 @@ class Atom:
                     atom.position)
 
     def get_energy_with(self, atom: "Atom") -> float:
-        A_general = self.A + atom.A
-        B_general = self.B + atom.B
+        A_total = self.A + atom.A
+        B_total = self.B + atom.B
         r = self.get_distance_to(atom)
+        if r == 0:
+            return float("inf")
 
-        U = (A_general / (r**12)) - (B_general / (r**6))
+        U = (A_total / (r**12)) - (B_total / (r**6))
 
         return float(U)
 
