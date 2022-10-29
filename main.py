@@ -7,7 +7,7 @@ from os import makedirs
 from atom import Atom
 
 
-def run(ITERS, K, T, FRAMES, affecting_radius, atoms, dimensions, space_size, calculation_way: Literal["with given num of iters", "via counting useless iters"] = "with given num of iters", show_results_automatically: bool = True, calculation_name: str = "", calculation_group: str = ""):
+def run(ITERS, K, T, FRAMES, affecting_radius, atoms, dimensions, calculation_way: Literal["with given num of iters", "via counting useless iters"] = "with given num of iters", show_results_automatically: bool = True, calculation_name: str = "", calculation_group: str = ""):
 
     path = f"output/{calculation_group}/{calculation_name}_KT={K*T}/"
     makedirs(path)
@@ -29,8 +29,6 @@ def run(ITERS, K, T, FRAMES, affecting_radius, atoms, dimensions, space_size, ca
     else:
         system.atoms = atoms
 
-    system.colorize_atoms()
-
     system.write_cur_state_to_f(path+"xyz/start.xyz")
     system.add_cur_state_to_rdf(
         title="start for all pairs")
@@ -46,6 +44,7 @@ def run(ITERS, K, T, FRAMES, affecting_radius, atoms, dimensions, space_size, ca
             if i % (ITERS//FRAMES) == 0:
                 system.add_frame()
                 system.add_rdf_frame()
+                print(f"Completed on {round(i/(ITERS/FRAMES)/FRAMES*100,5)}%")
 
             old_energy = system.get_total_E(consider_change=True)
             system.move_random_atom(Atom.generate_random_vector(axes=system.dimensions,
@@ -111,4 +110,4 @@ def run(ITERS, K, T, FRAMES, affecting_radius, atoms, dimensions, space_size, ca
 
 if __name__ == "__main__":
     run(50000, 0.001, 1, 15, float('inf'), 10, 2, (-1, 1),
-        "with given num of iters", True, input("Name: "), "te")
+        "with given num of iters", True, input("Name: "), "test")

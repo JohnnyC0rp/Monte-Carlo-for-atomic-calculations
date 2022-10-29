@@ -174,7 +174,7 @@ def get_rdf(self, show=True, html=False, img=False):
                 type="buttons",
                 buttons=[dict(label="Play",
                               method="animate",
-                              args=[None, {"frame": {"duration": 1500}, "fromcurrent": True, "transition": {"duration": 2000}}])])]
+                              args=[None, {"frame": {"duration": 2500}, "fromcurrent": True, "transition": {"duration": 1000}}])])]
         ),
         data=[*self.rdf_frames[0].data]+main_lines_data,
         frames=self.rdf_frames[1:],
@@ -193,7 +193,7 @@ def get_totalE_plot(self, show=True, html=None, img=None):
     x = [i for i in range(len(y))]
     fig = px.line(x=x, y=y)
     fig.add_scatter(x=x, y=y, mode="markers")
-    fig.update_yaxes(range=(-20, 100))
+    fig.update_yaxes(range=(min(self.energies)-3, max(self.energies[-10:])+10))
 
     if html:
         fig.write_html(html)

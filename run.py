@@ -36,6 +36,6 @@ name = input(
 
 print("Please wait...")
 run(ITERS, K, T, FRAMES,
-    AFFECTING_RADIUS, ATOMS, DIMENSIONS, SIZE, calculation_way, show_automatically, name, group)
+    AFFECTING_RADIUS, ATOMS, DIMENSIONS, calculation_way, show_automatically, name, group)
 
 input("Done.")
