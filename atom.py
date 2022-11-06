@@ -9,8 +9,8 @@ from numpy import array
 class Atom:
 
     position: array
-    A: float = 0.5
-    B: float = 0.5
+    A: float = 1
+    B: float = 1
 
     def __post_init__(self) -> None:
 

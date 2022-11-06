@@ -10,8 +10,6 @@ class System:
     def __init__(self, dimensions: int, affecting_radius: int = 2, atoms: list = None):
         self.atoms = atoms if atoms else []
         self.atoms_colors = defaultdict(list)
-        if self.atoms:
-            self.colorize_atoms()
         self.moved_atoms = []
         self.frames = []
         self.rdf_frames = []
@@ -33,7 +31,6 @@ class System:
                     axes=self.dimensions,
                     min_=position_range[0],
                     max_=position_range[1]), A, B))
-        self.colorize_atoms()
 
     def read_atoms_from_file(self, file: str):
 
@@ -44,7 +41,6 @@ class System:
                     self.atoms.append(Atom(
                         [float(l[j]) for j in range(1,self.dimensions+1)], float(l[3]), float(l[4])
                     ))
-        self.colorize_atoms()
 
     @staticmethod
     def get_generated_atoms(N, dimensions, position_range):
@@ -93,7 +89,7 @@ class System:
             f.write("\n")
             for atom in self.atoms:
                 f.write(
-                    f"H      {atom.position[0]}      {atom.position[1]}      {0 if self.dimensions == 2 else atom.position[2]}      {atom.A}      {atom.B}\n")
+                    f"A      {atom.position[0]}      {atom.position[1]}      {'' if self.dimensions == 2 else atom.position[2]}      {atom.A}      {atom.B}\n")
 
     def __str__(self) -> str:
         if not self.atoms:

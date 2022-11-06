@@ -8,6 +8,7 @@ from numpy import arange, linspace
 
 def visualize(self, show=True, html=False, img=False):
 
+    self.colorize_atoms()
     if not self.frames:
         self.add_frame()
 
@@ -67,7 +68,7 @@ def add_frame(self):
                 z=[atom.position[2] for atom in atoms if not (atom is self.marked_atom)] if self.dimensions == 3
                 else [0 for _ in range(len(self.atoms))],
                 mode="markers",
-                marker_color=f'rgb({ ( min(A,B) / max(A,B) ) * 255 },{ ( 1 - min(A,B) / max(A,B) ) * 255 },150)', name=f"Atoms with A={A} and B={B}"
+                marker_color=f'rgb({abs ( min(A,B) / (max(A,B) if max(A,B) != 0 else 1) ) * 255 },{abs ( 1 - min(A,B) / (max(A,B) if max(A,B) != 0 else 1) ) * 255 },150)', name=f"Atoms with A={A} and B={B}"
             ))
 
     if self.marked_atom:
