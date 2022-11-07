@@ -2,13 +2,11 @@ from typing import Literal
 import plotly.graph_objects as go
 import plotly.express as px
 from math import dist, exp, ceil
-from statistics import mode
-from numpy import arange, linspace
+from numpy import linspace
 
 
 def visualize(self, show=True, html=False, img=False):
 
-    self.colorize_atoms()
     if not self.frames:
         self.add_frame()
 
@@ -54,6 +52,8 @@ def visualize(self, show=True, html=False, img=False):
 
 
 def add_frame(self):
+
+    self.colorize_atoms()
 
     data = []
 

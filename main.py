@@ -83,6 +83,7 @@ def run(ITERS, K, T, FRAMES, affecting_radius, atoms, dimensions, calculation_wa
             f"Incorrect argument given. '{calculation_way}' was given. 'with given num of iters' or 'via counting useless iters' was expected.")
 
     # Saving and visualizing
+
     system.add_cur_state_to_rdf(rdf_main_atom.position, "end for all pairs")
     system.add_cur_state_to_rdf(
         rdf_main_atom.position, "end from one ceratin atom", "from certain atom")

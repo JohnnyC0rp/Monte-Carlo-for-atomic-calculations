@@ -17,9 +17,9 @@ class System:
         self.marked_atom = None
         self.dimensions = dimensions
         self.affecting_radius = affecting_radius
-        
 
     def colorize_atoms(self):
+        self.atoms_colors = defaultdict(list)
         for a in self.atoms:
             key = f"{a.A}|{a.B}"
             self.atoms_colors[key].append(a)
@@ -39,7 +39,8 @@ class System:
                 if line[0] == "A":
                     l = line.split()
                     self.atoms.append(Atom(
-                        [float(l[j]) for j in range(1,self.dimensions+1)], float(l[3]), float(l[4])
+                        [float(l[j]) for j in range(1, self.dimensions+1)
+                         ], float(l[3]), float(l[4])
                     ))
 
     @staticmethod
